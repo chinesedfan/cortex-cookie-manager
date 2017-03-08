@@ -4,15 +4,16 @@ function dispose_cookie(key) {
   var date = new Date();
   date.setTime(date.getTime() + -1 * 24 * 60 * 60 * 1000);
 
-  document.cookie = key + '=; path=/; expires=' + date.toGMTString();
+  var domain = '.' + location.hostname.split('.').slice(-2).join('.'); // top domain
+  document.cookie = key + '=; domain=' + domain + '; path=/; expires=' + date.toGMTString();
 }
 
-
 function set_cookie(key, value) {
+  var domain = '.' + location.hostname.split('.').slice(-2).join('.'); // top domain
   if (typeof value === 'string') {
     value = encodeURIComponent(value);
   }
-  document.cookie = key + '=' + value + '; path=/';
+  document.cookie = key + '=' + value + '; domain=' + domain + '; path=/; expires=Fri, 31 Dec 9999 23:59:59 GMT';
 }
 
 function get_cookie(sKey) {
@@ -22,43 +23,29 @@ function get_cookie(sKey) {
 
 var handlers = {
   'mode-change': function(message) {
-      var protocol = location.protocol;
-      if(message.result2==true){
-          set_cookie('cortex_compress', false);
-      }else{
-          dispose_cookie('cortex_compress');
-      }
-      if(message.result3==true){
-          set_cookie('cortex_combo', false);
-      }else{
-          dispose_cookie('cortex_combo');
-      }
-      if(message.result1==true){
-          set_cookie('cortex_path', protocol + '//localhost:9074');
-      }else{
-          dispose_cookie('cortex_path');
-      }
-      if (message.result1 || message.result2 || message.result3) {
-          set_cookie('neuron', 'path=' + protocol + '//localhost:9074/mod,ext=.js');
-      } else {
-          dispose_cookie('neuron');
-      }
-      send_icon_message(message.result1 || message.result2 || message.result3);
+    if (!message.enabled) {
+      dispose_cookie('__mock_enabled');
+    } else {
+      set_cookie('__mock_enabled', '1');
+      set_cookie('__mock_server', message.server);
+      set_cookie('__mock_clientid', message.clientid);
+    }
+    send_icon_message(message.enabled);
 
     location.reload();
   },
 
   'test-activate': function(message) {
-    send_icon_message(get_cookie('neuron'));
+    send_icon_message(get_cookie('__mock_enabled') === '1');
   },
 
-    'query-status': function (message, sender, sendResponse) {
-        sendResponse({
-            domainpath: !!get_cookie('cortex_path'),
-            compress: !!get_cookie('cortex_compress'),
-            combo: !!get_cookie('cortex_combo')
-        })
-    }
+  'query-status': function (message, sender, sendResponse) {
+      sendResponse({
+          enabled: get_cookie('__mock_enabled'),
+          clientid: get_cookie('__mock_clientid'),
+          server: get_cookie('__mock_server')
+      });
+  }
 };
 
 

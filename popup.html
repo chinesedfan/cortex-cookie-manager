@@ -6,25 +6,33 @@
         body {
             margin: 10px;
             padding: 0px;
-            width: 120px;
+            width: 250px;
             font-family: "Helvetica Neue", "Calibri", Serif;
             font-size: 1em;
+        }
+        span {
+            display: inline-block;
+            margin-top: 5px;
+            width: 100px;
+        }
+        #mockclientid, #mockserver {
+            width: 135px
         }
     </style>
     <script src="popup.js"></script>
 </head>
 <body>
 <div>
-    <input type="checkbox" id="domainpath">
-    <label for="domainpath">domain path</label>
+    <input type="checkbox" id="mockenabled">
+    <label for="mockenabled">mock enabled</label>
 </div>
 <div>
-    <input type="checkbox" id="compress">
-    <label for="compress">compress</label>
+    <span>mock clientid</span>
+    <input type="text" id="mockclientid">
 </div>
 <div>
-    <input type="checkbox" id="combo">
-    <label for="combo">combo</label>
+    <span>mock server</span>
+    <input type="text" id="mockserver">
 </div>
 </body>
 </html>
