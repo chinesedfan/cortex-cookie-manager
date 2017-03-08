@@ -1,0 +1,25 @@
+{
+  "name": "mocker-cookie-manager",
+  "version": "1.0.0",
+  "description": "Simple Chrome plugin for managing mocker related cookies",
+  "main": "background.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chinesedfan/cortex-cookie-manager.git"
+  },
+  "keywords": [
+    "chrome",
+    "plugin",
+    "cookie",
+    "mocker"
+  ],
+  "author": "Xianming Zhong",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/chinesedfan/cortex-cookie-manager/issues"
+  },
+  "homepage": "https://github.com/chinesedfan/cortex-cookie-manager#readme"
+}
